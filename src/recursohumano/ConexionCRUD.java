@@ -48,4 +48,26 @@ public void guardarRegistros(String tabla, String camposTabla, String valoresCam
     }catch(Exception e){
         System.out.println(e.getMessage());
     }
+}
+// Método para actualizar y eliminar los registros de la base de datos 
+public void actualizarEliminarRegistros(String tabla, String valoresCamposNuevos, String condicion){
+    // Cargar la conexión 
+    ConexionCRUD conectar = new ConexionCRUD();
+    Connection cone = conectar.getConnection();
+    try{
+        Statement stmt;
+        String sqlQueryStmt;
+        // Verificar que los valoresCamposNuevos venga vacia y asi seleccionar si es borrar o actualizar registro
+        if(valoresCamposNuevos.isEmpty()){
+            sqlQueryStmt = "DELETE FROM " + tabla + " WHERE " + condicion + ";";
+        }else{
+            sqlQueryStmt = "UPDATE " + tabla + " SET " + valoresCamposNuevos + " WHERE " + condicion + ";";
+        }
+        stmt = cone.createStatement();
+        stmt.executeUpdate(sqlQueryStmt);
+        stmt.close();
+        cone.close();
+    }catch(SQLException ex){
+        System.out.println("Ha ocurrido el siguiente error: " + ex.getMessage());
+    }
 }} 
